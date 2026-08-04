@@ -13,68 +13,18 @@ import NotFound from "./pages/NotFound";
 function App() {
   return (
     <Routes>
-      <Route
-        path="/"
-        element={
-          <MainLayout>
-            <Home />
-          </MainLayout>
-        }
-      />
+      {/* Routes with Navbar and Footer */}
+      <Route path="/" element={<MainLayout />}>
+        <Route index element={<Home />} />
+        <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
+        <Route path="explore" element={<Explore />} />
+        <Route path="profile" element={<Profile />} />
+        <Route path="comic/:id" element={<ComicDetails />} />
+      </Route>
 
-      <Route
-        path="/login"
-        element={
-          <MainLayout>
-            <Login />
-          </MainLayout>
-        }
-      />
-
-      <Route
-        path="/register"
-        element={
-          <MainLayout>
-            <Register />
-          </MainLayout>
-        }
-      />
-
-      <Route
-        path="/explore"
-        element={
-          <MainLayout>
-            <Explore />
-          </MainLayout>
-        }
-      />
-
-      <Route
-        path="/profile"
-        element={
-          <MainLayout>
-            <Profile />
-          </MainLayout>
-        }
-      />
-
-      <Route
-        path="/comic/:id"
-        element={
-          <MainLayout>
-            <ComicDetails />
-          </MainLayout>
-        }
-      />
-
-      <Route
-        path="*"
-        element={
-          <MainLayout>
-            <NotFound />
-          </MainLayout>
-        }
-      />
+      {/* 404 Page */}
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }

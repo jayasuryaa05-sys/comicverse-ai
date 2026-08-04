@@ -1,7 +1,7 @@
 function Footer() {
   return (
-    <footer>
-      <p>© 2026 ComicVerse AI. All Rights Reserved.</p>
+    <footer className="bg-gray-900 text-white text-center py-4">
+      © 2026 ComicVerse AI. All Rights Reserved.
     </footer>
   );
 }
