@@ -2,29 +2,59 @@ import { Link } from "react-router-dom";
 
 function Navbar() {
   return (
-    <nav className="bg-gray-900 text-white px-8 py-4 flex justify-between items-center">
+    <nav
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        padding: "20px 50px",
+        background: "#111827",
+      }}
+    >
+      <h2 style={{ color: "#6CFF4D" }}>ComicVerse AI</h2>
 
-      <h1 className="text-2xl font-bold text-green-400">
-        ComicVerse AI
-      </h1>
-
-      <div className="flex gap-8">
-
-        <Link to="/">Home</Link>
-
-        <Link to="/explore">Explore</Link>
-
-        <Link to="/profile">Profile</Link>
-
-      </div>
-
-      <Link
-        to="/login"
-        className="bg-green-500 px-4 py-2 rounded-lg"
+      <div
+        style={{
+          display: "flex",
+          gap: "25px",
+          alignItems: "center",
+        }}
       >
-        Login
-      </Link>
+        <Link
+          to="/"
+          style={{ color: "white", textDecoration: "none" }}
+        >
+          Home
+        </Link>
 
+        <Link
+          to="/explore"
+          style={{ color: "white", textDecoration: "none" }}
+        >
+          Explore
+        </Link>
+
+        <Link
+          to="/profile"
+          style={{ color: "white", textDecoration: "none" }}
+        >
+          Profile
+        </Link>
+
+        <Link
+          to="/login"
+          style={{
+            background: "#6CFF4D",
+            color: "black",
+            padding: "10px 20px",
+            borderRadius: "8px",
+            textDecoration: "none",
+            fontWeight: "bold",
+          }}
+        >
+          Login
+        </Link>
+      </div>
     </nav>
   );
 }
