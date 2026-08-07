@@ -1,55 +1,47 @@
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getHomeData } from "../services/api";
 
 function Home() {
+  const [data, setData] = useState({
+    title: "",
+    description: "",
+  });
+
+  useEffect(() => {
+    async function loadData() {
+      const result = await getHomeData();
+      setData(result);
+    }
+
+    loadData();
+  }, []);
+
   return (
     <div
       style={{
-        minHeight: "80vh",
         background: "#111827",
         color: "white",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
+        minHeight: "80vh",
+        textAlign: "center",
+        paddingTop: "100px",
       }}
     >
       <h1
         style={{
-          color: "#6CFF4D",
+          color: "#39ff14",
           fontSize: "60px",
         }}
       >
-        ComicVerse AI
+        {data.title}
       </h1>
 
       <p
         style={{
-          marginTop: "20px",
-          fontSize: "22px",
+          fontSize: "24px",
         }}
       >
-        Welcome to the AI Powered Comic Reading Platform
+        {data.description}
       </p>
-
-      <div
-        style={{
-          display: "flex",
-          gap: "20px",
-          marginTop: "40px",
-        }}
-      >
-        <Link to="/login">
-          <button>Login</button>
-        </Link>
-
-        <Link to="/register">
-          <button>Register</button>
-        </Link>
-
-        <Link to="/explore">
-          <button>Explore Comics</button>
-        </Link>
-      </div>
     </div>
   );
 }

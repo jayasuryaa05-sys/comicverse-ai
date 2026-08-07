@@ -1,9 +1,29 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+origins = [
+    "http://localhost:5173"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 def home():
     return {
         "message": "Welcome to ComicVerse AI Backend"
+    }
+
+@app.get("/api/home")
+def get_home():
+    return {
+        "title": "ComicVerse AI",
+        "description": "AI Powered Comic Reading Platform"
     }
