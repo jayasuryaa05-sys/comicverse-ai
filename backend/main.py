@@ -3,8 +3,9 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
+# Allow the React frontend to communicate with FastAPI
 origins = [
-    "http://localhost:5173"
+    "http://localhost:5173",
 ]
 
 app.add_middleware(
@@ -15,15 +16,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.get("/")
 def home():
     return {
         "message": "Welcome to ComicVerse AI Backend"
     }
 
+
 @app.get("/api/home")
 def get_home():
     return {
         "title": "ComicVerse AI",
-        "description": "AI Powered Comic Reading Platform"
+        "description": "AI Powered Comic Reading Platform",
+        "status": "Backend connected successfully"
     }
