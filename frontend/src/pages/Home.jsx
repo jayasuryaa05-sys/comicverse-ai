@@ -20,7 +20,17 @@ function Home() {
 
   if (error) {
     return (
-      <div style={{ padding: "50px", color: "red" }}>
+      <div
+        style={{
+          minHeight: "80vh",
+          background: "#111827",
+          color: "red",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          fontSize: "20px",
+        }}
+      >
         {error}
       </div>
     );
@@ -28,7 +38,17 @@ function Home() {
 
   if (!data) {
     return (
-      <div style={{ padding: "50px", color: "white" }}>
+      <div
+        style={{
+          minHeight: "80vh",
+          background: "#111827",
+          color: "white",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          fontSize: "20px",
+        }}
+      >
         Loading...
       </div>
     );
@@ -51,20 +71,20 @@ function Home() {
       <h1
         style={{
           color: "#6CFF4D",
-          fontSize: "60px",
+          fontSize: "50px",
           marginBottom: "20px",
         }}
       >
-        {data.title}
+        Welcome to ComicVerse AI
       </h1>
 
       <p
         style={{
-          fontSize: "24px",
+          fontSize: "22px",
           marginBottom: "15px",
         }}
       >
-        {data.description}
+        {data.message}
       </p>
 
       <p
@@ -73,7 +93,7 @@ function Home() {
           fontSize: "18px",
         }}
       >
-        {data.status}
+        AI-powered comic experience 🚀
       </p>
     </div>
   );

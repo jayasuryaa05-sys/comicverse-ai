@@ -11,8 +11,12 @@ function Navbar() {
         background: "#111827",
       }}
     >
-      <h2 style={{ color: "#6CFF4D" }}>ComicVerse AI</h2>
+      {/* Logo */}
+      <h2 style={{ color: "#6CFF4D", margin: 0 }}>
+        ComicVerse AI
+      </h2>
 
+      {/* Navigation */}
       <div
         style={{
           display: "flex",
@@ -22,21 +26,40 @@ function Navbar() {
       >
         <Link
           to="/"
-          style={{ color: "white", textDecoration: "none" }}
+          style={{
+            color: "white",
+            textDecoration: "none",
+          }}
         >
           Home
         </Link>
 
         <Link
           to="/explore"
-          style={{ color: "white", textDecoration: "none" }}
+          style={{
+            color: "white",
+            textDecoration: "none",
+          }}
         >
           Explore
         </Link>
 
         <Link
+          to="/upload"
+          style={{
+            color: "white",
+            textDecoration: "none",
+          }}
+        >
+          Upload
+        </Link>
+
+        <Link
           to="/profile"
-          style={{ color: "white", textDecoration: "none" }}
+          style={{
+            color: "white",
+            textDecoration: "none",
+          }}
         >
           Profile
         </Link>
@@ -53,6 +76,17 @@ function Navbar() {
           }}
         >
           Login
+        </Link>
+
+        <Link
+          to="/register"
+          style={{
+            color: "white",
+            textDecoration: "none",
+            fontWeight: "bold",
+          }}
+        >
+          Register
         </Link>
       </div>
     </nav>

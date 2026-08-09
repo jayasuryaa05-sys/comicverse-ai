@@ -1,0 +1,46 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Page-1" id="ugbYbpMJ4RTq6I5R1iaH">
+    <mxGraphModel dx="1030" dy="608" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="VwEkMU0MbQjKl38m4mUN-5" edge="1" parent="1" source="VwEkMU0MbQjKl38m4mUN-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=12 12;" target="VwEkMU0MbQjKl38m4mUN-3" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="VwEkMU0MbQjKl38m4mUN-2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="120" width="150" x="330" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="VwEkMU0MbQjKl38m4mUN-6" edge="1" parent="1" source="VwEkMU0MbQjKl38m4mUN-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=12 12;" target="VwEkMU0MbQjKl38m4mUN-4" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="VwEkMU0MbQjKl38m4mUN-3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="120" width="150" x="330" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="VwEkMU0MbQjKl38m4mUN-4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="120" width="150" x="330" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="VwEkMU0MbQjKl38m4mUN-7" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="main.py&lt;div&gt;&lt;br&gt;&lt;div&gt;FastAPI App&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="40" width="110" x="350" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="VwEkMU0MbQjKl38m4mUN-8" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="/api/register&lt;div&gt;&lt;br&gt;&lt;div&gt;/api/login&amp;nbsp;&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="50" width="110" x="320" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="VwEkMU0MbQjKl38m4mUN-9" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="imports / uses" vertex="1">
+          <mxGeometry height="20" width="90" x="410" y="190" as="geometry" />
+        </mxCell>
+        <mxCell id="VwEkMU0MbQjKl38m4mUN-10" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="users.py" vertex="1">
+          <mxGeometry height="30" width="60" x="375" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="VwEkMU0MbQjKl38m4mUN-11" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="hash_password()&lt;div&gt;&lt;br&gt;&lt;div&gt;verify_password()&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;user functions&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="110" x="350" y="290" as="geometry" />
+        </mxCell>
+        <mxCell id="VwEkMU0MbQjKl38m4mUN-12" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="User Storage" vertex="1">
+          <mxGeometry height="30" width="110" x="350" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="VwEkMU0MbQjKl38m4mUN-13" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Username&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;email&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;password_hash&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="120" x="345" y="480" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
