@@ -1,17 +1,68 @@
 from fastapi import FastAPI, HTTPException, Depends, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from users import users, hash_password, verify_password
 from datetime import datetime, timedelta, timezone
 from jose import jwt
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pathlib import Path
 import shutil
 
+from passlib.context import CryptContext
+from database import get_db_connection
+
+
+# ===============================
+# JWT CONFIGURATION
+# ===============================
+
 SECRET_KEY = "comicverse-ai-secret-key-change-later"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
+
 security = HTTPBearer()
+
+pwd_context = CryptContext(
+    schemes=["bcrypt"],
+    deprecated="auto"
+)
+
+
+# ===============================
+# PASSWORD FUNCTIONS
+# ===============================
+
+def hash_password(password: str):
+    return pwd_context.hash(password)
+
+
+def verify_password(password: str, hashed_password: str):
+    return pwd_context.verify(password, hashed_password)
+
+
+# ===============================
+# JWT FUNCTIONS
+# ===============================
+
+def create_access_token(email: str):
+    expire = datetime.now(timezone.utc) + timedelta(
+        minutes=ACCESS_TOKEN_EXPIRE_MINUTES
+    )
+
+    payload = {
+        "sub": email,
+        "exp": expire,
+    }
+
+    return jwt.encode(
+        payload,
+        SECRET_KEY,
+        algorithm=ALGORITHM
+    )
+
+
+# ===============================
+# GET CURRENT USER
+# ===============================
 
 def get_current_user(
     credentials: HTTPAuthorizationCredentials = Depends(security)
@@ -33,13 +84,38 @@ def get_current_user(
                 detail="Invalid token"
             )
 
-        if email not in users:
+        connection = get_db_connection()
+        cursor = connection.cursor()
+
+        cursor.execute(
+            """
+            SELECT id, username, email, password
+            FROM users
+            WHERE email = %s
+            """,
+            (email,)
+        )
+
+        user = cursor.fetchone()
+
+        cursor.close()
+        connection.close()
+
+        if user is None:
             raise HTTPException(
                 status_code=401,
                 detail="User not found"
             )
 
-        return users[email]
+        return {
+            "id": user[0],
+            "username": user[1],
+            "email": user[2],
+            "password": user[3]
+        }
+
+    except HTTPException:
+        raise
 
     except Exception:
         raise HTTPException(
@@ -47,19 +123,17 @@ def get_current_user(
             detail="Invalid or expired token"
         )
 
-def create_access_token(email: str):
-    expire = datetime.now(timezone.utc) + timedelta(
-        minutes=ACCESS_TOKEN_EXPIRE_MINUTES
-    )
 
-    payload = {
-        "sub": email,
-        "exp": expire,
-    }
-
-    return jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
+# ===============================
+# FASTAPI APP
+# ===============================
 
 app = FastAPI()
+
+
+# ===============================
+# CORS
+# ===============================
 
 origins = [
     "http://localhost:5173",
@@ -74,6 +148,10 @@ app.add_middleware(
 )
 
 
+# ===============================
+# MODELS
+# ===============================
+
 class UserRegister(BaseModel):
     username: str
     email: str
@@ -84,6 +162,10 @@ class UserLogin(BaseModel):
     email: str
     password: str
 
+
+# ===============================
+# HOME
+# ===============================
 
 @app.get("/")
 def home():
@@ -101,20 +183,51 @@ def get_home():
     }
 
 
+# ===============================
+# REGISTER
+# ===============================
+
 @app.post("/api/register")
 def register(user: UserRegister):
 
-    if user.email in users:
+    connection = get_db_connection()
+    cursor = connection.cursor()
+
+    cursor.execute(
+        "SELECT id FROM users WHERE email = %s",
+        (user.email,)
+    )
+
+    existing_user = cursor.fetchone()
+
+    if existing_user:
+        cursor.close()
+        connection.close()
+
         raise HTTPException(
             status_code=400,
             detail="Email already registered"
         )
 
-    users[user.email] = {
-        "username": user.username,
-        "email": user.email,
-        "password": hash_password(user.password)
-    }
+    hashed_password = hash_password(user.password)
+
+    cursor.execute(
+        """
+        INSERT INTO users
+        (username, email, password)
+        VALUES (%s, %s, %s)
+        """,
+        (
+            user.username,
+            user.email,
+            hashed_password
+        )
+    )
+
+    connection.commit()
+
+    cursor.close()
+    connection.close()
 
     return {
         "message": "Registration successful",
@@ -122,55 +235,92 @@ def register(user: UserRegister):
     }
 
 
+# ===============================
+# LOGIN
+# ===============================
+
 @app.post("/api/login")
 def login(user: UserLogin):
 
-    if user.email not in users:
+    connection = get_db_connection()
+    cursor = connection.cursor()
+
+    cursor.execute(
+        """
+        SELECT id, username, email, password
+        FROM users
+        WHERE email = %s
+        """,
+        (user.email,)
+    )
+
+    stored_user = cursor.fetchone()
+
+    cursor.close()
+    connection.close()
+
+    if stored_user is None:
         raise HTTPException(
             status_code=401,
             detail="Invalid email or password"
         )
 
-    stored_user = users[user.email]
-
     if not verify_password(
         user.password,
-        stored_user["password"]
+        stored_user[3]
     ):
         raise HTTPException(
             status_code=401,
             detail="Invalid email or password"
         )
 
-    access_token = create_access_token(user.email)
+    access_token = create_access_token(
+        stored_user[2]
+    )
 
     return {
         "message": "Login successful",
         "access_token": access_token,
         "token_type": "bearer",
-        "username": stored_user["username"],
-        "email": stored_user["email"]
-}
+        "username": stored_user[1],
+        "email": stored_user[2]
+    }
+
+
+# ===============================
+# CURRENT USER
+# ===============================
 
 @app.get("/api/me")
-def get_me(current_user=Depends(get_current_user)):
+def get_me(
+    current_user=Depends(get_current_user)
+):
     return {
         "username": current_user["username"],
         "email": current_user["email"]
     }
+
+
+# ===============================
+# COMIC UPLOAD
+# ===============================
 
 @app.post("/api/comics/upload")
 def upload_comic(
     file: UploadFile = File(...),
     current_user=Depends(get_current_user)
 ):
+
     upload_folder = Path("uploads")
     upload_folder.mkdir(exist_ok=True)
 
     file_path = upload_folder / file.filename
 
     with file_path.open("wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+        shutil.copyfileobj(
+            file.file,
+            buffer
+        )
 
     return {
         "message": "Comic uploaded successfully",
