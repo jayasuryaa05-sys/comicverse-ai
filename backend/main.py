@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Depends, UploadFile, File
+from fastapi import FastAPI, HTTPException, Depends, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from datetime import datetime, timedelta, timezone
@@ -307,6 +307,7 @@ def get_me(
 
 @app.post("/api/comics/upload")
 def upload_comic(
+    title: str = Form(...),
     file: UploadFile = File(...),
     current_user=Depends(get_current_user)
 ):
@@ -316,14 +317,42 @@ def upload_comic(
 
     file_path = upload_folder / file.filename
 
+    # Save comic file
     with file_path.open("wb") as buffer:
         shutil.copyfileobj(
             file.file,
             buffer
         )
 
+    # Save comic information in PostgreSQL
+    connection = get_db_connection()
+    cursor = connection.cursor()
+
+    cursor.execute(
+        """
+        INSERT INTO comics
+        (title, filename, uploaded_by)
+        VALUES (%s, %s, %s)
+        RETURNING id
+        """,
+        (
+            title,
+            file.filename,
+            current_user["id"]
+        )
+    )
+
+    comic_id = cursor.fetchone()[0]
+
+    connection.commit()
+
+    cursor.close()
+    connection.close()
+
     return {
         "message": "Comic uploaded successfully",
+        "comic_id": comic_id,
+        "title": title,
         "filename": file.filename,
         "uploaded_by": current_user["username"]
     }

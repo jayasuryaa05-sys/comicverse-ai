@@ -18,7 +18,7 @@ function UploadComic() {
       setLoading(true);
       setMessage("");
 
-      const result = await uploadComic(file);
+      const result = await uploadComic(file, file.name);
 
       setMessage(result.message);
       setFile(null);

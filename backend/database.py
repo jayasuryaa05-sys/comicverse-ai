@@ -1,11 +1,15 @@
+import os
 import psycopg2
+from dotenv import load_dotenv
+
+load_dotenv()
 
 DATABASE_URL = (
-    "dbname=comicverse_db "
-    "user=postgres "
-    "password=suryaa527 "
-    "host=localhost "
-    "port=5432"
+    f"dbname={os.getenv('DB_NAME')} "
+    f"user={os.getenv('DB_USER')} "
+    f"password={os.getenv('DB_PASSWORD')} "
+    f"host={os.getenv('DB_HOST')} "
+    f"port={os.getenv('DB_PORT')}"
 )
 
 

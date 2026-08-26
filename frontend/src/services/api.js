@@ -57,7 +57,7 @@ export async function getHomeData() {
 // ===============================
 // UPLOAD COMIC
 // ===============================
-export async function uploadComic(file) {
+export async function uploadComic(file, title) {
   const token = JSON.parse(localStorage.getItem("user"))?.access_token;
 
   if (!token) {
@@ -66,6 +66,7 @@ export async function uploadComic(file) {
 
   const formData = new FormData();
   formData.append("file", file);
+  formData.append("title", title);
 
   const response = await fetch(`${API_URL}/api/comics/upload`, {
     method: "POST",
