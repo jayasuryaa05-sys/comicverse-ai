@@ -356,3 +356,47 @@ def upload_comic(
         "filename": file.filename,
         "uploaded_by": current_user["username"]
     }
+
+# ===============================
+# GET ALL COMICS
+# ===============================
+
+@app.get("/api/comics")
+def get_comics(
+    current_user=Depends(get_current_user)
+):
+    connection = get_db_connection()
+    cursor = connection.cursor()
+
+    cursor.execute(
+        """
+        SELECT
+            comics.id,
+            comics.title,
+            comics.filename,
+            comics.uploaded_by,
+            comics.uploaded_at,
+            users.username
+        FROM comics
+        JOIN users
+            ON comics.uploaded_by = users.id
+        ORDER BY comics.uploaded_at DESC
+        """
+    )
+
+    comics = cursor.fetchall()
+
+    cursor.close()
+    connection.close()
+
+    return [
+        {
+            "id": comic[0],
+            "title": comic[1],
+            "filename": comic[2],
+            "uploaded_by": comic[3],
+            "uploaded_at": comic[4],
+            "username": comic[5]
+        }
+        for comic in comics
+    ]

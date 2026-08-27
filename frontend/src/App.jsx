@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
 
 import UploadComic from "./pages/UploadComic";
+import ComicLibrary from "./pages/ComicLibrary";
 
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -24,6 +25,7 @@ function App() {
         <Route path="profile" element={<Profile />} />
         <Route path="comic/:id" element={<ComicDetails />} />
         <Route path="upload" element={<UploadComic />} />
+        <Route path="comics" element={<ComicLibrary />} />
       </Route>
 
       {/* 404 Page */}
