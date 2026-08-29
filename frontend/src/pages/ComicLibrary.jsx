@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { getComics } from "../services/api";
 
 function ComicLibrary() {
@@ -58,51 +59,92 @@ function ComicLibrary() {
       </h1>
 
       {message && (
-        <p style={{ color: "#ff6b6b", textAlign: "center" }}>
+        <p
+          style={{
+            color: "#ff6b6b",
+            textAlign: "center",
+          }}
+        >
           {message}
         </p>
       )}
 
       {comics.length === 0 ? (
-        <p style={{ textAlign: "center", color: "#d1d5db" }}>
+        <p
+          style={{
+            textAlign: "center",
+            color: "#d1d5db",
+          }}
+        >
           No comics uploaded yet.
         </p>
       ) : (
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+            gridTemplateColumns:
+              "repeat(auto-fit, minmax(250px, 1fr))",
             gap: "25px",
             maxWidth: "1100px",
             margin: "0 auto",
           }}
         >
           {comics.map((comic) => (
-            <div
+            <Link
               key={comic.id}
+              to={`/comic/${comic.id}`}
               style={{
-                background: "#1f2937",
-                padding: "25px",
-                borderRadius: "15px",
+                textDecoration: "none",
+                color: "inherit",
               }}
             >
-              <h2 style={{ color: "#6CFF4D" }}>
-                {comic.title}
-              </h2>
+              <div
+                style={{
+                  background: "#1f2937",
+                  padding: "25px",
+                  borderRadius: "15px",
+                  cursor: "pointer",
+                  transition: "transform 0.2s",
+                }}
+              >
+                <h2
+                  style={{
+                    color: "#6CFF4D",
+                  }}
+                >
+                  {comic.title}
+                </h2>
 
-              <p>
-                📄 {comic.filename}
-              </p>
+                <p>
+                  📄 {comic.filename}
+                </p>
 
-              <p>
-                👤 {comic.username}
-              </p>
+                <p>
+                  👤 {comic.username}
+                </p>
 
-              <p style={{ color: "#9ca3af" }}>
-                📅{" "}
-                {new Date(comic.uploaded_at).toLocaleDateString()}
-              </p>
-            </div>
+                <p
+                  style={{
+                    color: "#9ca3af",
+                  }}
+                >
+                  📅{" "}
+                  {new Date(
+                    comic.uploaded_at
+                  ).toLocaleDateString()}
+                </p>
+
+                <p
+                  style={{
+                    color: "#6CFF4D",
+                    marginTop: "15px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Read Details →
+                </p>
+              </div>
+            </Link>
           ))}
         </div>
       )}

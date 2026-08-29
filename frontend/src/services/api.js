@@ -107,3 +107,26 @@ export async function getComics() {
 
   return data;
 }
+
+export async function getComicById(id) {
+  const token = JSON.parse(localStorage.getItem("user"))?.access_token;
+
+  if (!token) {
+    throw new Error("Please login first.");
+  }
+
+  const response = await fetch(`${API_URL}/api/comics/${id}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.detail || "Failed to fetch comic");
+  }
+
+  return data;
+}

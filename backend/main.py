@@ -400,3 +400,52 @@ def get_comics(
         }
         for comic in comics
     ]
+
+# ===============================
+# GET SINGLE COMIC
+# ===============================
+
+@app.get("/api/comics/{comic_id}")
+def get_comic(
+    comic_id: int,
+    current_user=Depends(get_current_user)
+):
+    connection = get_db_connection()
+    cursor = connection.cursor()
+
+    cursor.execute(
+        """
+        SELECT
+            comics.id,
+            comics.title,
+            comics.filename,
+            comics.uploaded_by,
+            comics.uploaded_at,
+            users.username
+        FROM comics
+        JOIN users
+            ON comics.uploaded_by = users.id
+        WHERE comics.id = %s
+        """,
+        (comic_id,)
+    )
+
+    comic = cursor.fetchone()
+
+    cursor.close()
+    connection.close()
+
+    if comic is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Comic not found"
+        )
+
+    return {
+        "id": comic[0],
+        "title": comic[1],
+        "filename": comic[2],
+        "uploaded_by": comic[3],
+        "uploaded_at": comic[4],
+        "username": comic[5]
+    }
