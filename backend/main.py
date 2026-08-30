@@ -449,3 +449,52 @@ def get_comic(
         "uploaded_at": comic[4],
         "username": comic[5]
     }
+
+# ===============================
+# GET COMIC FILE
+# ===============================
+
+from fastapi.responses import FileResponse
+
+
+@app.get("/api/comics/{comic_id}/file")
+def get_comic_file(
+    comic_id: int,
+    current_user=Depends(get_current_user)
+):
+    connection = get_db_connection()
+    cursor = connection.cursor()
+
+    cursor.execute(
+        """
+        SELECT filename
+        FROM comics
+        WHERE id = %s
+        """,
+        (comic_id,)
+    )
+
+    comic = cursor.fetchone()
+
+    cursor.close()
+    connection.close()
+
+    if comic is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Comic not found"
+        )
+
+    file_path = Path("uploads") / comic[0]
+
+    if not file_path.exists():
+        raise HTTPException(
+            status_code=404,
+            detail="Comic file not found"
+        )
+
+    return FileResponse(
+        path=file_path,
+        filename=comic[0],
+        media_type="application/pdf"
+    )

@@ -4,6 +4,7 @@ import MainLayout from "./layouts/MainLayout";
 
 import UploadComic from "./pages/UploadComic";
 import ComicLibrary from "./pages/ComicLibrary";
+import ComicReader from "./pages/ComicReader";
 
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -24,6 +25,7 @@ function App() {
         <Route path="explore" element={<Explore />} />
         <Route path="profile" element={<Profile />} />
         <Route path="comic/:id" element={<ComicDetails />} />
+        <Route path="read/:id" element={<ComicReader />} />
         <Route path="upload" element={<UploadComic />} />
         <Route path="comics" element={<ComicLibrary />} />
       </Route>
