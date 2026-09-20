@@ -6,3 +6,4 @@ dist/
 build/
 # Uploaded comic files
 backend/uploads/
+.env
